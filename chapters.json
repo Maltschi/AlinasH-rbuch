@@ -1,0 +1,19 @@
+{
+  "title": "Unsere Geschichte",
+  "description": "Mach es dir gemütlich und hör einfach Kapitel für Kapitel. Dieses kleine Hörbuch wächst mit der Zeit – immer wenn es etwas Neues zu erzählen gibt.",
+  "cover": "images/cover.jpg",
+  "chapters": [
+    {
+      "title": "Das Vorwort",
+      "description": "Ein paar erste Worte für dich",
+      "file": "audio/01-vorwort.mp3",
+      "duration": "—"
+    },
+    {
+      "title": "Kapitel 1",
+      "description": "Hier kommt deine erste Geschichte hin",
+      "file": "audio/02-kapitel-1.mp3",
+      "duration": "—"
+    }
+  ]
+}
