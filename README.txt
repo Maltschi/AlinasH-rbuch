@@ -5,7 +5,8 @@ Enthalten:
 - Kleines "i" unten rechts und PIN-Fenster (Standard-PIN 1234)
 - Mehrere Audiodateien gleichzeitig hochladen
 - Jede Datei ist ein eigener Abschnitt
-- Reihenfolge manuell über ↑ / ↓ ändern
+- Dateien werden beim Hinzufügen anhand der führenden Zahl im Dateinamen automatisch sortiert (z. B. 01, 02, 03)
+- Reihenfolge danach weiterhin manuell über ↑ / ↓ ändern
 - Titel/Beschreibung ändern, Audio ersetzen, Abschnitt löschen
 - "Änderungen speichern" sichert den Entwurf
 - "Veröffentlichen" macht den Entwurf öffentlich sichtbar
@@ -14,11 +15,10 @@ WICHTIG: Vor dem Online-Betrieb muss einmal Supabase eingerichtet werden:
 1. Kostenloses Projekt auf https://supabase.com erstellen.
 2. In Supabase > SQL Editor den Inhalt von supabase-setup.sql ausführen.
 3. In Storage einen PUBLIC bucket mit dem Namen audio erstellen.
-4. In Project Settings > API die Project URL und den anon/public Key kopieren.
-5. config.js öffnen und DEINE_SUPABASE_PROJECT_URL sowie DEIN_SUPABASE_ANON_KEY ersetzen.
-6. PIN in config.js bei Bedarf ändern (Standard 1234).
-7. Eigenes Cover als images/cover.jpg ablegen.
-8. Gesamten Ordner bei Netlify veröffentlichen.
+4. Die Project URL und den Publishable Key werden in config.js bereits eingetragen.
+5. PIN in config.js bei Bedarf ändern (Standard 1234).
+6. Eigenes Cover als images/cover.jpg ablegen.
+7. Gesamten Ordner bei Netlify veröffentlichen.
 
 Benutzung:
 - Website öffnen > kleines i unten rechts > PIN.

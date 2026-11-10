@@ -3,6 +3,6 @@ window.HOERBUCH = {
   title: "Unsere Geschichte",
   cover: "images/cover.jpg",
   pin: "1234",
-  supabaseUrl: "DEINE_SUPABASE_PROJECT_URL",
-  supabaseKey: "DEIN_SUPABASE_ANON_KEY"
+  supabaseUrl: "https://arqotyghfulbzfbkspyx.supabase.co",
+  supabaseKey: "sb_publishable_Mqks30zKdFwzKu2F0_ZOjA_QBlZqTW0"
 };
