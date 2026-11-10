@@ -30,5 +30,45 @@ $("empty").onclick=()=>{draft.push({id:crypto.randomUUID(),title:"",description:
 async function save(){if(!client){$("note").textContent="Supabase bitte zuerst einrichten.";return false}try{$("status").textContent="Speichert…";let rows=[];for(let i=0;i<draft.length;i++){let c=draft[i],path=c.file_path;if(c._file){let ext=(c._file.name.split(".").pop()||"mp3").toLowerCase();path=`${c.id}.${ext}`;let {error}=await client.storage.from("audio").upload(path,c._file,{upsert:true,contentType:c._file.type||"audio/mpeg"});if(error)throw error}if(!path)throw Error(`Abschnitt ${i+1}: Audiodatei fehlt.`);rows.push({id:c.id,title:c.title||`Abschnitt ${String(i+1).padStart(2,"0")}`,description:c.description||"",file_name:c.file_name||"",file_path:path,duration:c.duration||"",sort_order:i})}
 let {error:de}=await client.from("chapters_draft").delete().gte("sort_order",0);if(de)throw de;if(rows.length){let {error}=await client.from("chapters_draft").insert(rows);if(error)throw error}draft=rows; $("status").textContent="Entwurf gespeichert";$("note").textContent="Gespeichert. Öffentlich bleibt weiterhin die zuletzt veröffentlichte Version.";renderDraft();return true}catch(e){$("status").textContent="Fehler";$("note").textContent="Speichern fehlgeschlagen: "+e.message;return false}}
 $("save").onclick=save;
-$("publish").onclick=async()=>{if($("status").textContent==="Ungespeicherte Änderungen"){if(!(await save()))return}let {data,error}=await client.from("chapters_draft").select("*").order("sort_order");if(error){$("note").textContent=error.message;return}let {error:del}=await client.from("chapters_public").delete().gte("sort_order",0);if(del){$("note").textContent=del.message;return}if(data.length){let {error:ins}=await client.from("chapters_public").insert(data);if(ins){$("note").textContent=ins.message;return}}published=data;renderPublic();$("status").textContent="Veröffentlicht";$("note").textContent="Fertig! Die neue Version ist jetzt sichtbar."};
+$("publish").onclick=async()=>{
+  const button=$("publish");
+  if(!client){$("note").textContent="Keine Verbindung zu Supabase. Bitte config.js prüfen.";return}
+  button.disabled=true;
+  button.textContent="Veröffentlicht…";
+  try{
+    // Immer zuerst den aktuellen Stand sichern, damit keine Änderung verloren geht.
+    if(!(await save())) throw new Error($("note").textContent||"Der Entwurf konnte nicht gespeichert werden.");
+
+    const {data,error}=await client.from("chapters_draft").select("*").order("sort_order");
+    if(error) throw new Error("Entwurf konnte nicht gelesen werden: "+error.message);
+    const rows=data||[];
+
+    const {error:delError}=await client.from("chapters_public").delete().gte("sort_order",0);
+    if(delError) throw new Error("Alte Veröffentlichung konnte nicht ersetzt werden: "+delError.message);
+
+    if(rows.length){
+      const {error:insertError}=await client.from("chapters_public").insert(rows);
+      if(insertError) throw new Error("Kapitel konnten nicht veröffentlicht werden: "+insertError.message);
+    }
+
+    // Öffentliche Liste direkt erneut aus der Datenbank laden und erst dann Erfolg melden.
+    const {data:checkData,error:checkError}=await client.from("chapters_public").select("*").order("sort_order");
+    if(checkError) throw new Error("Veröffentlichung gespeichert, aber Kontrolle fehlgeschlagen: "+checkError.message);
+    published=checkData||[];
+    active=-1;
+    audio.pause();
+    audio.removeAttribute("src");
+    audio.load();
+    renderPublic();
+    $("status").textContent="Veröffentlicht";
+    $("note").textContent=published.length?`Fertig! ${published.length} Kapitel sind jetzt veröffentlicht.`:"Fertig! Die öffentliche Kapitel-Liste ist jetzt leer.";
+  }catch(e){
+    $("status").textContent="Veröffentlichung fehlgeschlagen";
+    $("note").textContent=e.message||String(e);
+    $("note").scrollIntoView({behavior:"smooth",block:"nearest"});
+  }finally{
+    button.disabled=false;
+    button.textContent="Veröffentlichen";
+  }
+};
 loadPublic();
