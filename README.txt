@@ -18,11 +18,11 @@ WICHTIG: Vor dem Online-Betrieb muss einmal Supabase eingerichtet werden:
 4. Die Project URL und den Publishable Key werden in config.js bereits eingetragen.
 5. PIN in config.js bei Bedarf ändern (Standard 1234).
 6. Eigenes Cover als images/cover.jpg ablegen.
-7. Gesamten Ordner bei Netlify veröffentlichen.
+7. Gesamten Ordner in deinem bestehenden GitHub-Repository ersetzen und über GitHub Pages veröffentlichen (oder alternativ bei Netlify).
 
 Benutzung:
 - Website öffnen > kleines i unten rechts > PIN.
-- Dateien hinzufügen, Titel bearbeiten, mit Pfeilen sortieren.
+- Dateien über „Audiodateien auswählen“ hinzufügen, Titel bearbeiten, mit Pfeilen sortieren. Auf iPhone öffnet sich die Dateiauswahl über die sichtbare Schaltfläche.
 - Änderungen speichern = Entwurf sichern.
 - Veröffentlichen = neue Kapitelversion wird öffentlich.
 
